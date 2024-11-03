@@ -27,14 +27,9 @@ def print_stderr(msg: str) -> None:
     sys.stderr.write(msg + '\n')
 
 
-def read_file_to_string(_file: str):
-    file_str = ''
-    with open(_file) as file:
-        for line in file:
-            for character in line:
-                if character != '\n':
-                    file_str += character
-    return file_str
+def read_file_to_string(file_name: str) -> str:
+    with open(file_name, 'r') as file:
+      return file.read()
 
 
 def format_checksum(data: str, width: int = 80) -> None:
@@ -71,6 +66,7 @@ def calculate_checksum(size: int, data: str):
     """
 
     checksum = 0
+      
     block_size = size // 8
     # print("block size", block_size)
     if len(data) % block_size != 0:
@@ -84,6 +80,14 @@ def calculate_checksum(size: int, data: str):
         block_value = sum(ord(char) for char in block)
         checksum += block_value
         # print(block)
+    
+    if size == 8:
+      checksum %= 0xff
+    elif size == 16:
+      checksum %= 0xffff
+    elif size == 32:
+      checksum %= 0xffffffff
+      
     return checksum
     # hex_dict = {'0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100', '5': '0101', '6': '0110', '7': '0111', '8': '1000', '9': '1001', 'a': '1010', 'b': '1011', 'c': '1100', 'd': '1101', 'e': '1110', 'f': '1111'}
 
@@ -134,11 +138,9 @@ def main():
         print_stderr("Checksum size must be 8, 16, or 32")
         return
 
-    print(f"File name: {file_name}")
-    print(f"Checksum size: {checksum_size}")
 
     data = read_file_to_string(file_name)
-    print("File Content:")
+    #print("File Content:")
     format_checksum(data)
 
     checksum = calculate_checksum(checksum_size, data)
@@ -180,7 +182,7 @@ def main():
     # s = 'The quick brown fox jumps over the lazy dog.'.encode('utf-8')
     # print(s.hex())
 
-    os.system("echo Print this to the screen")
+    #os.system("echo Print this to the screen")
     # calculate_checksum(8)
-    if __name__ == "__main__":
-        main()
+
+main()
