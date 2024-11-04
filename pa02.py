@@ -1,5 +1,4 @@
 import sys
-import os
 
 """
 Your program should open the input text files, 
@@ -27,7 +26,7 @@ def print_stderr(msg: str) -> None:
     sys.stderr.write(msg + '\n')
 
 
-def read_file_to_string(file_name: str) -> str:
+def read_file_to_string(file_name: str) ->str:
     with open(file_name, 'r') as file:
       return file.read()
 
@@ -45,6 +44,7 @@ def format_checksum(data: str, width: int = 80) -> None:
     # var1 = 5
     # string: str = f 'the variable var1 is {5}'
     # return string
+
 
 def calculate_checksum(size: int, data: str):
     """
@@ -66,7 +66,6 @@ def calculate_checksum(size: int, data: str):
     """
 
     checksum = 0
-      
     block_size = size // 8
     # print("block size", block_size)
     if len(data) % block_size != 0:
@@ -80,14 +79,14 @@ def calculate_checksum(size: int, data: str):
         block_value = sum(ord(char) for char in block)
         checksum += block_value
         # print(block)
-    
+
     if size == 8:
-      checksum %= 0xff
+        checksum %= 0xff
     elif size == 16:
-      checksum %= 0xffff
+        checksum %= 0xffff
     elif size == 32:
-      checksum %= 0xffffffff
-      
+        checksum %= 0xffffffff
+        
     return checksum
     # hex_dict = {'0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100', '5': '0101', '6': '0110', '7': '0111', '8': '1000', '9': '1001', 'a': '1010', 'b': '1011', 'c': '1100', 'd': '1101', 'e': '1110', 'f': '1111'}
 
@@ -125,6 +124,7 @@ def calculate_checksum(size: int, data: str):
 
     # return 0
 
+
 # Input the required file name and the checksum size as command line parameters
 def main():
     if len(sys.argv) < 3:
@@ -138,14 +138,15 @@ def main():
         print_stderr("Checksum size must be 8, 16, or 32")
         return
 
-
     data = read_file_to_string(file_name)
-    #print("File Content:")
+    # print("File Content:")
     format_checksum(data)
 
     checksum = calculate_checksum(checksum_size, data)
     character_count = len(data)
-    print(f"{checksum_size} bit checksum is {checksum:0{checksum_size // 4}x} for all {character_count: >4d} chars")
+
+    formatted_checksum = f"{checksum:0{checksum_size // 4}x}".upper()
+    print(f" {checksum_size} bit checksum is {formatted_checksum: >8} for all {character_count: >4d} chars")
     # call the file
     #
     # sum = ''
@@ -169,20 +170,18 @@ def main():
     # size = 8, 16, 32
     # file = data
     # if(len(file) > size):
-    #creates a slice of a string (substring)
-        # file = file[1:(size + 1) ]
-        # print(file)
+    # creates a slice of a string (substring)
+    # file = file[1:(size + 1) ]
+    # print(file)
 
     # print(int(hex_string, 16) + int(binary_str, 2))
 
-
-
-    # file = open(f"{file_name}", "r") 
+    # file = open(f"{file_name}", "r")
 
     # s = 'The quick brown fox jumps over the lazy dog.'.encode('utf-8')
     # print(s.hex())
 
-    #os.system("echo Print this to the screen")
     # calculate_checksum(8)
+    # if __name__ == "__main__":
 
 main()
